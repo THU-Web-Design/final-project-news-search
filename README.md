@@ -1,8 +1,13 @@
-#新聞搜尋
-###Step1.下載docker
-###Step2.Pull Microsoft SQL server container
-###Step3.Run the docker container
-####run the server
+# 新聞搜尋
+
+### Step1.下載docker
+
+### Step2.Pull Microsoft SQL server container
+
+### Step3.Run the docker container
+
+#### run the server
+
 ```shell
 python3 app.py
 ```
