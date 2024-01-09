@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+ 
+{% block title %}
+Home of Books
+{% endblock %}
+ 
+{% block content %}
+<h1 class="text-center my-5">📚Books Detail📚</h1>
+<div class="container d-flex justify-content-center align-items-center">
+    <a class="btn btn-outline-info mb-3" href="{{ url_for('add_books') }}">Add Books</a>
+</div>
+<div class="container">
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Book Title</th>
+            <th scope="col">Author</th>
+        </tr>
+        </thead>
+        {% if not details%}
+        <div class="text-center">
+            <h3 class="my-5">No Records to Display!</h3>
+        </div>
+        {% else %}
+        <tbody>
+        {% for data in details %}
+        <tr>
+            <th scope="row">{{data.id}}</th>
+            <td>{{data.title}}</td>
+            <td>{{data.author}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

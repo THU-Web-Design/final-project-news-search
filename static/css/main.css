@@ -1,0 +1,270 @@
+body {
+  background-color: #5F6A6A;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.user {
+  display: flex;
+  align-items: flex-start;
+  padding-right: 20px;
+  margin-bottom: 20px;
+
+  .avatar {
+    width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 99em;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .name {
+    color: #333;
+  }
+
+  .text {
+    background-color: #aaa;
+    padding: 16px;
+    border-radius: 10px;
+    position: relative;
+  }
+}
+
+.remote {
+  .text {
+    margin-left: 20px;
+    margin-right: 15px;
+    color: #000000;
+    background-color: #41f1e5;
+    font-size: 13px;
+
+    &::before {
+      border-right: 10px solid #4179f1;
+      left: -10px;
+    }
+  }
+}
+
+.local {
+  justify-content: flex-end;
+
+  .text {
+    margin-right: 20px;
+    margin-left: 80px;
+    order: -1;
+    background-color: #fff;
+    color: #333;
+
+    &::before {
+      border-left: 10px solid #fff;
+      right: -10px;
+    }
+  }
+}
+
+.remote,
+.local {
+  & .text::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
+
+  .text {
+    font-weight: 300;
+    box-shadow: 0 0 10px #888;
+  }
+}
+
+.input {
+  display: flex;
+  /* 垂直居中 */
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 12.5%;
+  width: 60%;
+  height: 60px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 10px;
+  bottom: 6px;
+  position: fixed;
+  background-color: rgba(0, 0, 0, .2);
+  z-index: 2;
+}
+
+.input select {
+  font-size: 12px;
+  flex: 1;
+  line-height: 1.6;
+  color: rgb(70, 131, 124);
+  height: 25px;
+  width: 10px;
+  border-radius: 10px;
+  margin-right: 5px;
+  margin-top: 6px;
+  align-items: center;
+  justify-content: center
+}
+
+#messageBox {
+  border: 2px solid #fff;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 65px;
+  max-height: 100%;
+  overflow-y: auto;
+  height: auto;
+  float: right;
+  /* 將訊息框靠右 */
+  width: 80%;
+  /* 設定訊息框寬度 */
+  border: none;
+  font-size: 13px;
+}
+
+.message {
+  position: relative;
+  ;
+}
+
+.submit-button {
+  border: none;
+  border-radius: 5px;
+  color: rgb(84, 142, 142);
+  background-color: rgba(0, 0, 0, .3);
+  display: flex;
+  margin-top: 6px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+  /* 在被按下时向下移动 2 像素 */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  /* 添加阴影效果 */
+}
+
+.bi-send {
+  position: relative;
+  top: 1px;
+  /* 垂直微调 */
+  left: -1px;
+  /* 水平微调 */
+}
+
+.tooltip {
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  bottom: calc(100% + 5px);
+  /* 调整提示框位置 */
+  white-space: nowrap;
+  /* 不换行 */
+  right: -5%;
+  /* 使提示框水平居中 */
+  transform: translateX(-50%);
+}
+
+.tooltip.active {
+  display: block;
+}
+
+/*SIDEBAR-INFO*/
+.sidebar {
+  width: 20%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .8);
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.username {
+  font-size: small;
+  margin-left: 5px;
+}
+
+/* 右側內容樣式 */
+.content {
+  margin-left: 20%;
+  /* 左欄寬度 */
+  width: 75%;
+  /* 右欄寬度 */
+  padding: 20px;
+}
+
+.logout-button {
+  padding: 5px 0px;
+  font-size: 15px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.logout-button:active {
+  color: #1ac4d4;
+  /* 按钮被按下时的文字颜色 */
+}
+
+.conversation{
+  background-color: rgba(0, 0, 0, 0.3);
+  max-height: 300px;
+    /* 設置最大高度 */
+  overflow-y: auto;
+  border-radius: 5px;
+  padding: 10px ;
+  margin-bottom: 20px;
+  margin-right: 130px;
+  display: flex;
+  flex-direction: column;
+}
+/*BOTTOMBAR-INFO*/
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 65px;
+  background-color: #5F6A6A;
+  margin-left: 20px;
+  text-align: center;
+  line-height: 40px;
+  z-index: 1;
+}

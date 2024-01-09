@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link type='text/css' rel="stylesheet" href="{{ url_for('static', filename='css/signup_icon.css') }}" />
+    <link type='text/css' rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}" />
+    <title>註冊頁面</title>
+</head>
+
+<body>
+    <div id="bigBox">
+        <h1>SIGN UP</h1>
+        {% if warning_message %}
+            <p class = 'warning'>{{ warning_message }}</p>
+        {% endif %}
+
+        <form action='/signup' method='POST'>
+            <div class="inputBox">
+                <div class="inputText">
+                    <span class="iconfont icon-nickname"></span>
+                    <input type='text' name="username" placeholder="Username" />
+                </div>
+                <div class="inputText">
+                    <span class="iconfont icon-email"></span>
+                    <svg class="email-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                        <path
+                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
+                    </svg>
+                    <input type="text" name="email" placeholder="e-mail" />  
+                </div>
+                
+                <div class="inputText">
+                    <span class="iconfont icon-visible"></span>
+                    <input type="password" name="password" placeholder="Password" />
+                </div>
+            </div>
+           
+            <input class="loginButton" type="button" onclick="window.location.href='{{ url_for('login_page') }}'" value="Login" />
+            <button class="loginButton" type="submit">Signup</button>
+        </form>    
+    </div> 
+</body>
+
+</html>

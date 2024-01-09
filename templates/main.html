@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link type='text/css' rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="user-info">
+            <!-- 使用者圖像 -->
+            <img src="https://picsum.photos/100/100?random=16" alt="User Avatar" class="user-avatar">
+            <span class="username">{{username}}</span>
+            <!-- 登出連結 -->
+        </div>
+        <ul class="sidebar-menu">
+            <li><button class="logout-button" onclick="redirectToLogin()">Logout</button></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="input">
+            <select id="selectInput">
+                <option value="" selected disabled>請選擇新聞類別</option>
+                <option value="全部">全部</option>
+                <option value="政治">政治</option>
+                <option value="體育">體育</option>
+                <option value="社會">社會</option>
+                <option value="國際">國際</option>
+                <option value="財經">財經</option>
+                <option value="影劇">影劇</option>
+            </select>
+            <button class="submit-button" onclick="sendMessage()" id="sendMessageButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                </svg>
+            </button>
+            <div id="dropdownContainer">
+            </div>
+        </div>
+
+        <div class="bottom-bar"></div>
+        <div class="tooltip" id="tooltip">Send Message</div>
+        <div id="messageBox"></div>
+        <div id='content'></div>
+    <script>
+        function displayMessage(data) {
+            var messageBox = document.getElementById("messageBox");
+            var conversationDiv = document.createElement("div");
+            conversationDiv.classList.add("conversation");
+            data.forEach(function (item) {
+
+                var userMessage = document.createElement("div");
+                userMessage.classList.add("user");
+                userMessage.classList.add("remote");
+
+                var text = document.createElement("div");
+                text.classList.add("text");
+
+                var title = document.createElement("p");
+                title.textContent = "Title: " + item.title;
+
+                var date = document.createElement("p");
+                date.textContent = "Date: " + item.date;
+
+                var category = document.createElement("p");
+                category.textContent = "Category: " + item.category;
+
+                var link = document.createElement("p");
+                var linkText = document.createElement("a");
+                linkText.href = item.link;
+                linkText.textContent = item.title; // Or use item.link's text if needed
+                link.appendChild(linkText);
+
+                text.appendChild(title);
+                text.appendChild(date);
+                text.appendChild(category);
+                text.appendChild(link);
+
+                linkText.addEventListener('click', function (event) {
+                event.preventDefault(); // 防止點擊連結後跳轉到該連結
+                var clickedLink = event.target.href; // 取得點擊的連結
+
+                // 發送 POST 請求到 /fetch_content 路由
+                fetch('/fetch_content', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: clickedLink })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 在這裡處理從伺服器返回的數據，例如更新網頁上的內容
+                    console.log(data);
+                    // 假設有一個 ID 為 messageBox 的元素，用於顯示內容
+                    var contentElement = document.getElementById('messageBox');
+                    var conversationDiv1 = document.createElement("div");
+                    conversationDiv1.classList.add("user");
+                    conversationDiv1.classList.add("remote");
+                    conversationDiv1.classList.add("conversation");
+
+                    var titleElement = document.createElement('h3');
+                    titleElement.textContent = data.title;
+
+                    // 創建對話匡內文本的元素
+                    var messageContent = document.createElement("p");
+                    messageContent.style.color = 'pink'; 
+                    messageContent.textContent = data.content;
+
+                    // 將內文元素加入對話匡
+                    conversationDiv1.appendChild(titleElement);
+                    conversationDiv1.appendChild(messageContent)
+
+                    // 獲取要放置對話匡的元素
+                    var messageBox = document.getElementById("messageBox");
+
+                    // 將對話匡加入到訊息框
+                    messageBox.appendChild(conversationDiv1);
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                });              
+
+                userMessage.appendChild(text);
+                conversationDiv.appendChild(userMessage);
+
+                messageBox.appendChild(conversationDiv);
+            });
+        }
+
+
+        function sendMessage() {
+            var select1 = document.getElementById("selectInput");
+
+            var selectedValue1 = select1.value;
+
+            if (selectedValue1) {
+                var messageBox = document.getElementById("messageBox");
+                var now = new Date();
+                var time = now.getHours() + ':' + now.getMinutes();
+
+                var userMessage = document.createElement("div");
+                userMessage.classList.add("user");
+                userMessage.classList.add("local");
+                userMessage.innerHTML = `<div class="avatar">
+                                    <div class="pic">
+                                        <img src="https://picsum.photos/100/100?random=16" />
+                                    </div>  
+                                    <div class="name">Me</div>
+                                </div>
+                                <div class="text">${selectedValue1}</div>
+                                <div class="time">${time}</div>`;
+                messageBox.appendChild(userMessage);
+
+                fetch('/fetch_news', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 'selected_value': select1.value })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 處理後端發送回來的數據（如果有的話）
+                    displayMessage(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                select1.value = '';
+                select2.value = '';
+                messageBox.scrollTop = messageBox.scrollHeight;
+                
+            } else {
+                alert("請選擇選項");
+            }            
+        }
+
+        function redirectToLogin() {
+            window.location.href = "login.html";
+        }
+
+        const button = document.getElementById('sendMessageButton');
+        let tooltip;
+
+        button.addEventListener('mouseenter', function () {
+            tooltip = document.createElement('div');
+            tooltip.textContent = 'Send Message';
+            tooltip.classList.add('tooltip');
+
+            this.appendChild(tooltip);
+        });
+
+        button.addEventListener('mouseleave', function () {
+            if (tooltip) {
+                tooltip.remove();
+            }
+        });
+
+        button.addEventListener('click', function () {
+            if (tooltip) {
+                tooltip.remove();
+            }
+        });
+
+    </script>
+</body>
+</html>
